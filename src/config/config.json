@@ -2,8 +2,10 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "phathuynhtest",
+    "database": "toystorephathuynh",
     "host": "127.0.0.1",
+    "raw": true,
+    "logging": false,
     "dialect": "mysql"
   },
   "test": {

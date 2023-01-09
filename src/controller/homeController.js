@@ -1,9 +1,18 @@
 import db from "../models/";
-let getHomePage = async (req, res) => {
-  let data = await db.User.findAll({ raw: true });
-  console.log("cechk daata user", data);
-  return res.render("homePage.ejs");
+import adminService from "../services/adminService";
+
+let getAllUser = async (req, res) => {
+  try {
+    let allUser = await adminService.getAllUser();
+    return res.status(200).json(allUser);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    });
+  }
 };
 module.exports = {
-  getHomePage,
+  getAllUser,
 };
