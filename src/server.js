@@ -4,10 +4,11 @@ import viewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB";
 require("dotenv").config();
+var cors = require("cors");
 let app = express();
 // Add headers before the routes are defined
 //khac phuc loi CORS
-// app.use(cors({ origin: true }));
+app.use(cors({ origin: true }));
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect

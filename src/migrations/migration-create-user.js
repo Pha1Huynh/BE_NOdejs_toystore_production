@@ -15,6 +15,9 @@ module.exports = {
       password: {
         type: Sequelize.TEXT,
       },
+      roleId: {
+        type: Sequelize.STRING,
+      },
       fullName: {
         type: Sequelize.STRING,
       },
@@ -25,6 +28,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       gender: {
+        type: Sequelize.STRING,
+      },
+      statusAccount: {
         type: Sequelize.STRING,
       },
       createdAt: {

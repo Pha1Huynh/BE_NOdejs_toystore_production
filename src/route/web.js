@@ -2,6 +2,8 @@ import express from "express";
 import homeController from "../controller/homeController";
 import toyController from "../controller/toyController";
 import allcodesController from "../controller/allcodesController";
+import userController from "../controller/userController";
+import authController from "../controller/authController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -19,6 +21,20 @@ let initWebRoutes = (app) => {
   //client
   router.get("/api/get-toy-by-type", toyController.getToyByType);
   router.get("/api/get-all-toy", toyController.getAllToy);
+
+  //auth
+  router.post("/api/login", authController.handleLogin);
+  router.post("/api/logout", authController.handleLogout);
+  router.post("/api/refresh-access-token", authController.refreshAccessToken);
+  router.get(
+    "/api/get-info-user-with-token",
+    authController.authenToken,
+    authController.getInfoUserWithToken
+  );
+
+  //user
+  router.post("/api/create-new-user", userController.createNewUser);
+
   return app.use("/", router);
 };
 
