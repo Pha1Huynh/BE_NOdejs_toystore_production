@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "keyMap",
         as: "toyTypeData",
       });
+      Toys.hasMany(models.Cart, {
+        foreignKey: "toyId",
+        as: "toyData",
+      });
     }
   }
   Toys.init(

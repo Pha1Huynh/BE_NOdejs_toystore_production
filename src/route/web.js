@@ -4,6 +4,7 @@ import toyController from "../controller/toyController";
 import allcodesController from "../controller/allcodesController";
 import userController from "../controller/userController";
 import authController from "../controller/authController";
+import cartController from "../controller/cartController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -31,9 +32,25 @@ let initWebRoutes = (app) => {
     authController.authenToken,
     authController.getInfoUserWithToken
   );
-
   //user
   router.post("/api/create-new-user", userController.createNewUser);
+
+  //cart
+  router.post(
+    "/api/add-item-to-cart",
+    authController.authenToken,
+    cartController.addItemToCart
+  );
+  router.get(
+    "/api/get-cart-by-user-id",
+    authController.authenToken,
+    cartController.getCartByUserId
+  );
+  router.delete(
+    "/api/delete-item-from-cart",
+    authController.authenToken,
+    cartController.deleteItemFromCart
+  );
 
   return app.use("/", router);
 };

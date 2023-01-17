@@ -32,6 +32,7 @@ let handleLogin = (data) => {
             delete user.password;
 
             let tokens = await buildAccessToken(user);
+
             let { accessToken, refreshToken } = tokens;
             let createToken = await db.Tokens.create({
               userId: user.id,
@@ -42,6 +43,7 @@ let handleLogin = (data) => {
               errCode: 0,
               errMessage: "Login success",
               tokens: tokens,
+              user: user,
             });
           } else {
             resolve({
@@ -132,22 +134,33 @@ let refreshAccessToken = (refreshToken) => {
               }
               // create new accesstoken
               const accessToken = jwt.sign(
-                { email: data.email, roleId: data.roleId, id: data.id },
+                {
+                  email: data.email,
+                  roleId: data.roleId,
+                  id: data.id,
+                  fullname: data.fullname,
+                },
                 process.env.ACCESS_TOKEN_SECRET,
                 {
                   expiresIn: process.env.EXPIRED_ACCESS_TOKEN,
                 }
               );
+
               checkRefreshTokenDB.accessToken = accessToken;
               await checkRefreshTokenDB.save();
               let tokens = {};
               tokens.accessToken = accessToken;
               tokens.refreshToken = refreshToken;
+              let user = {};
+              user.id = data.id;
+              user.email = data.email;
+              user.fullname = data.fullname;
+              user.roleId = data.roleId;
               resolve({
                 errCode: 0,
                 errMessage: "Verify success",
                 tokens: tokens,
-                expired: process.env.EXPIRED_ACCESS_TOKEN,
+                user: user,
               });
             }
           );
