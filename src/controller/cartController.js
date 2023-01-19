@@ -85,8 +85,36 @@ let getCartByUserId = async (req, res) => {
     });
   }
 };
+let payItemFromCart = async (req, res) => {
+  try {
+    const authorizationHeader = req.headers["authorization"];
+    if (!authorizationHeader) {
+      return res.status(200).json({
+        errCode: -1,
+        errMessage: "Undefined accesstoken",
+      });
+    }
+    const accessToken = authorizationHeader.split(" ")[1];
+    if (!accessToken) {
+      return res.status(200).json({
+        errCode: -1,
+        errMessage: "Undefined accesstoken",
+      });
+    }
+    let data = await cartService.payItemFromCart(accessToken);
+
+    return res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    });
+  }
+};
 module.exports = {
   addItemToCart,
   getCartByUserId,
   deleteItemFromCart,
+  payItemFromCart,
 };

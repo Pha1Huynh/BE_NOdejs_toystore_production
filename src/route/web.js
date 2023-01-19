@@ -51,6 +51,11 @@ let initWebRoutes = (app) => {
     authController.authenToken,
     cartController.deleteItemFromCart
   );
+  router.patch(
+    "/api/pay-item-from-cart",
+    authController.authenToken,
+    cartController.payItemFromCart
+  );
 
   return app.use("/", router);
 };

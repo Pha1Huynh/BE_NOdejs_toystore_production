@@ -129,4 +129,51 @@ let getCartByUserId = (accessToken) => {
     }
   });
 };
-module.exports = { addItemToCart, getCartByUserId, deleteItemFromCart };
+let payItemFromCart = (accessToken) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (accessToken) {
+        //find
+        let user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        let userId = user.id;
+        let itemCart = await db.Cart.update(
+          { cartStatusId: "S2" },
+          {
+            where: {
+              userId: userId,
+              cartStatusId: "S1",
+            },
+            raw: false,
+          }
+        );
+        if (itemCart) {
+          //update status S1 to S2
+
+          resolve({
+            errCode: 0,
+            errMessage: "Pay Success",
+            data: itemCart,
+          });
+        } else {
+          resolve({
+            errCode: 0,
+            errMessage: "Pay failed",
+          });
+        }
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing params",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+module.exports = {
+  addItemToCart,
+  getCartByUserId,
+  deleteItemFromCart,
+  payItemFromCart,
+};
