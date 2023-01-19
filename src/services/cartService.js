@@ -61,6 +61,7 @@ let deleteItemFromCart = (accessToken, toyId) => {
             toyId: toyId,
             cartStatusId: "S1",
           },
+          raw: false,
         });
         if (itemCart) {
           //delete
@@ -93,6 +94,7 @@ let getCartByUserId = (accessToken) => {
       let user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
       let userId = user.id;
       let cartByUserId = await db.Cart.findAll({
+        raw: false,
         where: {
           userId: userId,
           cartStatusId: "S1",

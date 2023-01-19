@@ -51,6 +51,7 @@ let getAllToy = () => {
     let Toy = {};
     try {
       Toy = await db.Toys.findAll({
+        raw: false,
         attributes: ["id", "name", "price", "image", "toyTypeId"],
         include: [
           //lay thong tin toy kem theo thong tin cua no ton tai trong thang allcode
@@ -140,7 +141,7 @@ let deleteToy = (id) => {
       let result;
       let toy;
       if (id) {
-        toy = await db.Toys.findOne({ where: { id: id } });
+        toy = await db.Toys.findOne({ where: { id: id }, raw: false });
         if (toy) {
           await toy.destroy();
           resolve({

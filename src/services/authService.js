@@ -23,7 +23,7 @@ let handleLogin = (data) => {
       if (data && data.email && data.password) {
         let user = await db.Users.findOne({
           where: { email: data.email },
-          attributes: ["id", "email", "password", "fullname", "roleId"],
+          attributes: ["id", "email", "password", "fullName", "roleId"],
           raw: true,
         });
         if (user) {
@@ -81,6 +81,7 @@ let handleLogout = (refreshToken) => {
           //delete record
           let deleteRefreshToken = await db.Tokens.destroy({
             where: { refreshToken: refreshToken },
+            raw: false,
           });
           if (deleteRefreshToken) {
             resolve({
