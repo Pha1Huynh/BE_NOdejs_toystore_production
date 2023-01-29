@@ -7,7 +7,7 @@ let getToy = (option, type) => {
         Toy = await db.Toys.findAll();
         let imageBase64 = "";
         if (Toy.image) {
-          imageBase64 = new Buffer(Toy.image, "base64").toString("binary");
+          imageBase64 = Buffer.from(Toy.image, "base64").toString("binary");
         }
         Toy.image = imageBase64;
       }
@@ -33,7 +33,7 @@ let getToyById = (id) => {
         Toy = await db.Toys.findOne({ where: { id: id } });
         let imageBase64 = "";
         if (Toy.image) {
-          imageBase64 = new Buffer(Toy.image, "base64").toString("binary");
+          imageBase64 = Buffer.from(Toy.image, "base64").toString("binary");
         }
         Toy.image = imageBase64;
       }
@@ -64,7 +64,7 @@ let getAllToy = () => {
       });
       Toy = Toy.map((item) => {
         if (item.image) {
-          item.image = new Buffer(item.image, "base64").toString("binary");
+          item.image = Buffer.from(item.image, "base64").toString("binary");
           return item;
         }
       });

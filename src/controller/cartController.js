@@ -74,7 +74,8 @@ let getCartByUserId = async (req, res) => {
         errMessage: "Undefined accesstoken",
       });
     }
-    let data = await cartService.getCartByUserId(accessToken);
+
+    let data = await cartService.getCartByUserId(accessToken, req.query.type);
 
     return res.status(200).json(data);
   } catch (e) {

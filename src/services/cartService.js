@@ -88,33 +88,56 @@ let deleteItemFromCart = (accessToken, toyId) => {
     }
   });
 };
-let getCartByUserId = (accessToken) => {
+let getCartByUserId = (accessToken, type) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
       let userId = user.id;
-      let cartByUserId = await db.Cart.findAll({
-        raw: false,
-        where: {
-          userId: userId,
-          cartStatusId: "S1",
-        },
-
-        include: [
-          {
-            model: db.Toys,
-            as: "toyData",
+      let cartByUserId = {};
+      if (type === "Header") {
+        cartByUserId = await db.Cart.findAll({
+          raw: false,
+          where: {
+            userId: userId,
+            cartStatusId: "S1",
           },
-        ],
-      });
-      if (cartByUserId) {
-        cartByUserId.map((item) => {
-          item.toyData.image = new Buffer(
-            item.toyData.image,
-            "base64"
-          ).toString("binary");
-          return item;
+
+          include: [
+            {
+              model: db.Toys,
+              as: "toyData",
+              attributes: { exclude: ["image"] },
+            },
+          ],
         });
+      } else {
+        cartByUserId = await db.Cart.findAll({
+          raw: false,
+          where: {
+            userId: userId,
+            cartStatusId: "S1",
+          },
+
+          include: [
+            {
+              model: db.Toys,
+              as: "toyData",
+            },
+          ],
+        });
+      }
+
+      if (cartByUserId) {
+        if (type !== "Header") {
+          cartByUserId.map((item) => {
+            item.toyData.image = Buffer.from(
+              item.toyData.image,
+              "base64"
+            ).toString("binary");
+            return item;
+          });
+        }
+
         resolve({
           errCode: 0,
           errMessage: "Get cart by user id success",

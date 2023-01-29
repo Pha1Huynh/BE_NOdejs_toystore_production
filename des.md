@@ -36,10 +36,10 @@ raw: true,
 * Decode blob from db to base64:
   let imageBase64 = "";
   if (data.image) {
-  imageBase64 = new Buffer(data.image, "base64").toString("binary");
+  imageBase64 = Buffer.from(data.image, "base64").toString("binary");
   }
 * DEcode nhiều trường:
   data.map((item) => {
-  item.image = new Buffer(item.image, "base64").toString("binary");
+  item.image = Buffer.from(item.image, "base64").toString("binary");
   return item;
   });
